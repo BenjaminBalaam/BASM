@@ -45,13 +45,12 @@ void removeChar(char * str, char charToRemmove){
 }
 
 int main( int argc, char *argv[] ) {
-
-    if( argc > 3 ) {
-        printf("Expected 1 or 2 arguments, got %d.\n", argc-1);
+    if( argc > 5 ) {
+        printf("Expected between 1 and 4 arguments, got %d.\n", argc-1);
         return 1;
     }
     else if ( argc < 2 ) {
-        printf("1 or 2 arguments expected.\n");
+        printf("between 1 and 4 arguments expected.\n");
         return 1;
     }
     
@@ -234,8 +233,49 @@ int main( int argc, char *argv[] ) {
     int R1 = 0;
     int R2 = 0;
 
+    FILE* instream;
+    bool inbool = false;
+    FILE* outstream;
+    bool outbool = false;
+
+    if (argc == 3) {
+        if (strcmp(argv[2], "--debug-mode")) {
+            if (strcmp(argv[2], "stdin")) {
+                instream = fopen(argv[2], "r");
+                inbool = true;
+            }
+        }
+    } else if (argc == 4) {
+        if (!strcmp(argv[2], "--debug-mode")) {
+            if (strcmp(argv[3], "stdin")) {
+                instream = fopen(argv[3], "r");
+                inbool = true;
+            }
+        } else {
+            if (strcmp(argv[2], "stdin")) {
+                printf("%d", argv[2] == "stdin");
+                printf("%d", true);
+                instream = fopen(argv[2], "r");
+                inbool = true;
+            }
+            if (strcmp(argv[3], "stdout")) {
+                outstream = fopen(argv[3], "w");
+                outbool = true;
+            }
+        }
+    } else if (argc == 5) {
+        if (strcmp(argv[3], "stdin")) {
+            instream = fopen(argv[3], "r");
+            inbool = true;
+        }
+        if (strcmp(argv[4], "stdout")) {
+            outstream = fopen(argv[4], "w");
+            outbool = true;
+        }
+    }
+
     while (memory[program_counter] != 0) {
-        if (argc == 3) {
+        if (argc > 2) {
             if (!strcmp(argv[2], "--debug-mode") | !strcmp(argv[2], "-d")) {
                 debug(R1, R2, program_counter, memory);
             }
@@ -280,11 +320,20 @@ int main( int argc, char *argv[] ) {
                 program_counter = address - 1;
             }
         } else if ((memory[program_counter] % 1000000) / 100000 == 8) {
-            char input = getchar();
+            char input;
+            if (inbool) {
+                //input = fgetc(instream);
+            } else {
+                input = getchar();
+            }
             R1 = (int)input;
         } else if ((memory[program_counter] % 1000000) / 100000 == 9) {
             char output = (char) R1;
-            printf("%c", output);
+            if (outbool) {
+                fprintf(outstream, "%c", output);
+            } else {
+                printf("%c", output);
+            }
         }
 
         program_counter++;
