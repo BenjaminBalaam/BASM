@@ -1,0 +1,198 @@
+Start:
+In
+Store .Buffer_Index
+Swap
+Load 0
+Swap
+Subtract
+Branch to Next if 0
+Load Buffer_Index
+Swap
+Load 1
+Add
+Store Buffer_Index
+Branch to Start
+
+Next:
+Check A, .Ptr
+Branch to A if True
+Check S, .Ptr
+Branch to S if True
+Check L, .Ptr
+Branch to L if True
+Check B, .Ptr
+Branch to B if True
+Check I, .Ptr
+Branch to I if True
+Check O, .Ptr
+Branch to O if True
+Load .Ptr
+Branch to End if 0
+Add 1 to Ptr
+Branch to Next
+
+A:
+Add 1 to Ptr
+Check D, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check D, .Ptr
+Branch to Next if False
+Output +
+
+L:
+Add 1 to Ptr
+Check D, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check A, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output ^
+Check ., .Ptr
+Branch to PN if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+I:
+Add 1 to Ptr
+Check N, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check P, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output >
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+O:
+Add 1 to Ptr
+Check U, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check T, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check U, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output <
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+B:
+Add 1 to Ptr
+Check R, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Check A, .Ptr
+Branch to BRA if True
+Check Z, .Ptr
+Branch to BRZ if True
+Subtract 1 from Ptr
+Branch to Next
+
+BRA:
+Add 1 to Ptr
+Output /
+Check ., .Ptr
+Branch to PN if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+BRZ:
+Add 1 to Ptr
+Output $
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+S:
+Add 1 to Ptr
+Check U, .Ptr
+Branch to SUB if True
+Check W, .Ptr
+Branch to SWP if True
+Check T, .Ptr
+Branch to STO if True
+Branch to Next
+
+SUB:
+Add 1 to Ptr
+Check B, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output -
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+SWP:
+Add 1 to Ptr
+Check P, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output ~
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+STO:
+Add 1 to Ptr
+Check O, .Ptr
+Branch to Next if False
+Add 1 to Ptr
+Output *
+Check ., .Ptr
+Branch to Pn if False
+Output .
+Add 1 to Ptr
+Branch to PN
+
+Macros:
+
+PN (Proccessing Nums):
+Check Num, .Ptr
+Branch to Next if False
+Output .Ptr
+Add 1 to Ptr
+Branch to PN
+
+Check [Char], [Data];
+Load Data
+Swap
+Subtract 1 from Char
+Load Char
+Swap
+Subtract
+Branch to Return_False if 0
+Load Data
+Swap
+Add 1 to Char
+Load Char
+Subtract
+Branch to Return_True if 0
+Branch to Return_False
+
+Return_False:
+Store 0 in Return_Value
+Branch to .Return_Address
+
+Return_True:
+Store 1 in Return_Value
+Branch to .Return_Address
