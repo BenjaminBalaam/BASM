@@ -1,0 +1,323 @@
+Start:
+In
+Store .Buffer_Index
+Swap
+Load 0
+Swap
+Subtract
+Branch to Next if 0
+Load Buffer_Index
+Swap
+Load 1
+Add
+Store Buffer_Index
+Branch to Start
+
+Next:
+Store A in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+
+Branch to A if True
+Store S in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to S if True
+Store L in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to L if True
+Store B in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to B if True
+Store I in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to I if True
+Store O in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to O if True
+Load .Ptr
+Branch to End if 0
+Add 1 to Ptr
+Branch to Next
+
+A:
+Add 1 to Ptr
+Store D in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store D in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Output +
+
+L:
+Add 1 to Ptr
+Store D in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store A in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output ^
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to PN if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+I:
+Add 1 to Ptr
+Store N in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store P in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output >
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+O:
+Add 1 to Ptr
+Store U in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store T in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store U in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output <
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+B:
+Add 1 to Ptr
+Store R in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Store A in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to BRA if True
+Store Z in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to BRZ if True
+Subtract 1 from Ptr
+Branch to Next
+
+BRA:
+Add 1 to Ptr
+Output /
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to PN if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+BRZ:
+Add 1 to Ptr
+Output $
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+S:
+Add 1 to Ptr
+Store U in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to SUB if True
+Store W in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to SWP if True
+Store T in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Branch to STO if True
+Branch to Next
+
+SUB:
+Add 1 to Ptr
+Store B in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output -
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+SWP:
+Add 1 to Ptr
+Store P in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output ~
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+STO:
+Add 1 to Ptr
+Store O in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Add 1 to Ptr
+Output *
+Store . in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Pn if 0
+Output .
+Add 1 to Ptr
+Branch to PN
+
+Macros:
+
+PN (Proccessing Nums):
+Store Num in Char
+Store .Ptr in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Return_value
+Branch to Next if 0
+Output .Ptr
+Add 1 to Ptr
+Branch to PN
+
+Store [Char] in Char
+Store [Data]; in Data
+Store this+2 in Return_Address
+Branch to Check
+Load Data
+Swap
+Subtract 1 from Char
+Load Char
+Swap
+Subtract
+Branch to Return_False if 0
+Load Data
+Swap
+Add 1 to Char
+Load Char
+Subtract
+Branch to Return_True if 0
+Branch to Return_False
+
+Return_False:
+Store 0 in Return_Value
+Branch to .Return_Address
+
+Return_True:
+Store 1 in Return_Value
+Branch to .Return_Address

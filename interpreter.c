@@ -3,19 +3,35 @@
 #include <string.h>
 #include <stdbool.h>
 
-void debug(int R1, int R2, int program_counter, int memory[]) {
-    printf("\nR1:%d, R2:%d\n", R1, R2);
+bool debug(int R1, int R2, int program_counter, int memory[], int break_point, bool hit_break) {
+    if (program_counter == break_point) {
+        hit_break = true;
+    }
 
-    for (int i = 0; i < 40; i++) {
+    if (!hit_break) {
+        return false;
+    }
+
+    printf("\nR1:%d, R2:%d, PC:%d\n", R1, R2, program_counter);
+
+    int start = (program_counter / 40) * 40;
+
+    for (int i = start; i < start+40; i++) {
         if (i == program_counter) {
             printf("%d. %d <--- PC HERE\n", i, memory[i]);
         } else {
             printf("%d. %d\n", i, memory[i]);
         }
     }
-    char temp[10];
-    printf("DEBUG");
-    fgets(temp, 10, stdin);
+    printf("DEBUG\n");
+
+    // for (int i = 611; i < 611+30; i++) {
+    //     printf("%d. %d\n", i, memory[i]);
+    // }
+
+    getchar();
+
+    return hit_break;
 }
 
 void printint(int out) {
@@ -45,12 +61,10 @@ void removeChar(char * str, char charToRemmove){
 }
 
 int main( int argc, char *argv[] ) {
-    if( argc > 5 ) {
-        printf("Expected between 1 and 4 arguments, got %d.\n", argc-1);
-        return 1;
-    }
-    else if ( argc < 2 ) {
-        printf("between 1 and 4 arguments expected.\n");
+    bool hit_break = false;
+
+    if( argc != 6 ) {
+        printf("Expected 5 arguments: <filename> <debug> <break-point> <input> <output>\n");
         return 1;
     }
     
@@ -238,47 +252,20 @@ int main( int argc, char *argv[] ) {
     FILE* outstream;
     bool outbool = false;
 
-    if (argc == 3) {
-        if (strcmp(argv[2], "--debug-mode")) {
-            if (strcmp(argv[2], "stdin")) {
-                instream = fopen(argv[2], "r");
-                inbool = true;
-            }
-        }
-    } else if (argc == 4) {
-        if (!strcmp(argv[2], "--debug-mode")) {
-            if (strcmp(argv[3], "stdin")) {
-                instream = fopen(argv[3], "r");
-                inbool = true;
-            }
-        } else {
-            if (strcmp(argv[2], "stdin")) {
-                printf("%d", argv[2] == "stdin");
-                printf("%d", true);
-                instream = fopen(argv[2], "r");
-                inbool = true;
-            }
-            if (strcmp(argv[3], "stdout")) {
-                outstream = fopen(argv[3], "w");
-                outbool = true;
-            }
-        }
-    } else if (argc == 5) {
-        if (strcmp(argv[3], "stdin")) {
-            instream = fopen(argv[3], "r");
-            inbool = true;
-        }
-        if (strcmp(argv[4], "stdout")) {
-            outstream = fopen(argv[4], "w");
-            outbool = true;
-        }
+    char* do_debug = argv[2];
+    int break_point = atoi(argv[3]);
+    if (strcmp(argv[4], "stdin")) {
+        instream = fopen(argv[4], "r");
+        inbool = true;
+    }
+    if (strcmp(argv[5], "stdout")) {
+        outstream = fopen(argv[5], "w");
+        outbool = true;
     }
 
     while (memory[program_counter] != 0) {
-        if (argc > 2) {
-            if (!strcmp(argv[2], "--debug-mode") | !strcmp(argv[2], "-d")) {
-                debug(R1, R2, program_counter, memory);
-            }
+        if (!strcmp(do_debug, "true")) {
+            hit_break = debug(R1, R2, program_counter, memory, break_point, hit_break);
         }
 
         if (memory[program_counter] / 100000 == 1) {
@@ -290,6 +277,7 @@ int main( int argc, char *argv[] ) {
             }
         } else if ((memory[program_counter] % 1000000) / 100000 == 3) {
             int address = memory[program_counter] % 100000;
+
             if (memory[program_counter] / 1000000) {
                 address = memory[address];
             }
@@ -311,6 +299,7 @@ int main( int argc, char *argv[] ) {
                 address = memory[address];
             }
             program_counter = address - 1;
+            
         } else if ((memory[program_counter] % 1000000) / 100000 == 7) {
             int address = memory[program_counter] % 100000;
             if (memory[program_counter] / 1000000) {
@@ -322,11 +311,14 @@ int main( int argc, char *argv[] ) {
         } else if ((memory[program_counter] % 1000000) / 100000 == 8) {
             char input;
             if (inbool) {
-                //input = fgetc(instream);
+                input = fgetc(instream);
             } else {
                 input = getchar();
             }
             R1 = (int)input;
+            if (R1 == -1) {
+                R1 = 0;
+            }
         } else if ((memory[program_counter] % 1000000) / 100000 == 9) {
             char output = (char) R1;
             if (outbool) {
@@ -334,6 +326,8 @@ int main( int argc, char *argv[] ) {
             } else {
                 printf("%c", output);
             }
+        } else {
+            break;
         }
 
         program_counter++;

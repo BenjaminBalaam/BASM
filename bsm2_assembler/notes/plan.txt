@@ -1,0 +1,9 @@
+Loop through inputs reading into memory
+
+Loop through each instruction checking if the first char is "#"
+if it is, record the label name and the address
+
+Loop through each instruction checking which instruction name it
+matches, (if it starts with #, ignore that part)
+then it converts any registers mentioned into their memory addresses
+and any labels into their addresses
